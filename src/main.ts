@@ -1,8 +1,22 @@
+import 'dotenv/config';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { PrismaClient } from '@prisma/client';
 
-async function bootstrap() {
+export const prisma = new PrismaClient();
+
+const bootstrap = async () => {
+  const PORT = process.env.PORT || 8080;
   const app = await NestFactory.create(AppModule);
-  await app.listen(process.env.PORT ?? 3000);
-}
-bootstrap();
+  prisma.$connect();
+  await app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
+  });
+};
+
+bootstrap()
+  .then(() => {})
+  .catch((err) => {
+    console.log(err);
+    process.exit(1);
+  });
