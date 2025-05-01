@@ -10,10 +10,10 @@ export class AppService {
     return users;
   }
 
-  async getById(id: number): Promise<any> {
+  async getById(id: string): Promise<any> {
     const user = await prisma.users.findUnique({
       where: {
-        id: String(id),
+        id,
       },
     });
 
@@ -32,22 +32,22 @@ export class AppService {
   }
 
   async updateUser(
-    id: number,
+    id: string,
     data: { name: string; email: string; age: number },
   ): Promise<any> {
     const user = await prisma.users.update({
       where: {
-        id: String(id),
+        id,
       },
       data,
     });
     return user;
   }
 
-  async deleteUser(id: number): Promise<any> {
-    const user = await prisma.users.delete({
+  async deleteUser(id: string): Promise<any> {
+    await prisma.users.delete({
       where: {
-        id: String(id),
+        id,
       },
     });
     return 'User deleted successfully';
